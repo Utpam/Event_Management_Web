@@ -1,0 +1,38 @@
+/* @tailwind base;
+@tailwind components;
+@tailwind utilities; */
+@import "tailwindcss";
+
+@font-face {
+    font-family: Mukta;
+    src: url(./assets//MuktaMahee-Bold.ttf);
+}
+@font-face {
+    font-family: poppins-lt;
+    src: url(./assets//Poppins-Light.ttf);
+}
+@font-face {
+    font-family: poppins-sb;
+    src: url(./assets//Poppins-SemiBold.ttf);
+}
+@font-face {
+    font-family: poppins;
+    src: url(./assets//Poppins-Regular.ttf);
+}
+
+.button { 
+    background-color: white;
+    font-family: 'poppins-sb';
+    color: black;
+    padding: 2px 5px;
+}
+
+.shadow-og {
+    box-shadow: 5px 5px 1px 1px rgba(0, 0, 0, 0.7);
+}
+
+.cardGrad {
+    background: #ff0000;
+    background: linear-gradient(90deg,rgb(36, 0, 0) 0%, rgba(224, 255, 255, 0) 100%);
+}
+
