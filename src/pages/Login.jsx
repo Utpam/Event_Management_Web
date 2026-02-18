@@ -2,8 +2,8 @@ import Login from '../components/Login'
 
 function LoginPG() {
   return (
-    <div>
-        <Login />
+    <div className='w-full'>
+      <Login />
     </div>
   )
 }

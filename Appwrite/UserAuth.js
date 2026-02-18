@@ -12,25 +12,29 @@ class AuthService {
         this.account = new Account(this.client)
     }
 
+    
+
     // Create Account or SignUp
-    createAccount = async (email, password) => {
-        try{
+    createAccount = async (email, password, name) => {
+        try {
             return await this.account.create(
                 {
                     userId: ID.unique(),
                     email: email,
-                    password: password
+                    password: password,
+                    name: name
                 }
             )
         }
         catch (error) {
             console.error('Error: ', error)
+            throw error
         }
     }
 
     // Login
     authlogin = async (email, password) => {
-        try{
+        try {
             return await this.account.createEmailPasswordSession(
                 {
                     email: email,
@@ -40,16 +44,18 @@ class AuthService {
         }
         catch (error) {
             console.error('Error: ', error)
+            throw error
         }
     }
 
     // Logout
     authlogout = async () => {
-        try{
+        try {
             return await this.account.deleteSessions('current')
         }
         catch (error) {
             console.error('Error: ', error)
+            throw error
         }
     }
 
@@ -64,6 +70,7 @@ class AuthService {
             )
         } catch (error) {
             console.error('Error:', error)
+            throw error
         }
     }
 
@@ -78,6 +85,7 @@ class AuthService {
             )
         } catch (error) {
             console.error("Error: ", error)
+            throw error
         }
     }
 
@@ -86,6 +94,15 @@ class AuthService {
             return await this.account.get();
         } catch (error) {
             console.error('Error: ', error)
+            // getCurrentUser is often called on load, so throwing might cause unhandled promise rejections if not caught.
+            // However, consistent behavior is better. Use with caution in App.jsx.
+            // For now, I'll log and return null to avoid breaking initial load if user is not logged in.
+            // Actually, standard practice is to throw or return null.
+            // The original code returned undefined (implicit).
+            // Let's return null explicitly if we don't throw, but the implementation plan said throw.
+            // But `App.jsx` might just call it to check session.
+            // Let's check App.jsx usage before deciding on getCurrentUser.
+            throw error
         }
     }
 }

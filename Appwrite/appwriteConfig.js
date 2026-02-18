@@ -1,10 +1,11 @@
-import {Client, Storage, TablesDB, ID} from 'appwrite';
+import {Client, Storage, TablesDB, Teams, ID} from 'appwrite';
 import { config } from '../src/config/config'
 
 class AppwriteConfig {
     client = new Client();
     database;
     bucket;
+    teams;
 
     constructor() {
         this.client
@@ -12,8 +13,53 @@ class AppwriteConfig {
             .setEndpoint(config.appwriteEndpoint)
             this.database = new TablesDB(this.client)
             this.bucket = new Storage(this.client)
+            this.teams = new Teams(this.client)
     }
 
+
+    // creating clubs
+    
+    async CreateTeam () {
+        try{
+            return await this.teams.create(
+                'clubs',
+                // 'Clubs',
+                ['admin', 'member']
+            )
+        }
+        catch(error) {
+            console.error('Error on create teams: ', error)
+        }
+    }
+    
+    // creating memberships
+    
+    async CreateMember (email){
+        try {
+            'clubs',
+            ['member'],
+            email
+
+        } catch (error) {
+            console.error('Error to create Member: ', error);
+            
+        }
+    }
+    
+    // creating memberships
+    
+    async CreateMember (email){
+        try {
+            'clubs',
+            ['member'],
+            email
+
+        } catch (error) {
+            console.error('Error to create Member: ', error);
+            
+        }
+    }
+    
     // Upload File
     async uploadFile(file) {
         try {

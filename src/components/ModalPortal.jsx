@@ -54,10 +54,11 @@ export default function Modal({
         className={`
           fixed z-[9999] left-1/2 top-1/2
           -translate-x-1/2 -translate-y-1/2
-          w-[90vw] ${maxWidth}
-          rounded-2xl bg-white
+          w-[95vw] ${maxWidth}
+          rounded-2xl glass-card
           shadow-2xl
-          p-6
+          p-0
+          overflow-hidden
           animate-modalIn
         `}
       >
