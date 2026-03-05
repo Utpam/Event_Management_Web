@@ -5,7 +5,6 @@ export const config = {
     bucketId: String(import.meta.env.VITE_APPWRITE_BUCKET_ID),
     databaseId: String(import.meta.env.VITE_APPWRITE_DATABASE_ID),
     tableId: String(import.meta.env.VITE_APPWRITE_TABLE_ID),
-    apiKey: String(import.meta.env.APPWRITE_API_KEY),
     usersCollectionId: String(import.meta.env.VITE_APPWRITE_USERS_COLLECTION_ID),
     clubRequestsCollectionId: String(import.meta.env.VITE_APPWRITE_CLUB_REQUESTS_COLLECTION_ID),
     clubsCollectionId: String(import.meta.env.VITE_APPWRITE_CLUBS_COLLECTION_ID),
