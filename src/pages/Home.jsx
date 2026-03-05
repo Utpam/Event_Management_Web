@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react'
 import HomeList from '../components/HomeList'
 import OpenedComponent from '../components/OpenedComponent'
-import Modal from '../components/modalPortal'
+import Modal from '../components/ModalPortal'
 import { useAuth } from '../../AuthContext/UserAuthContext'
 import Login from '../components/Login'
 import searchIcon from '../assets/search.png'
