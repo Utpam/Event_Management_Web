@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react"
 import ReactDOM from "react-dom"
 
 
-function ModalPortal({ children }) {
+export const ModalPortal = ({ children }) => {
   const elRef = useRef(null)
 
   if (!elRef.current) {
