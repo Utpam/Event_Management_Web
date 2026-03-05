@@ -1,7 +1,7 @@
 import React from 'react'
 import { Calendar, MapPin } from 'lucide-react'
 
-function HomeList({ title, location, reg, start, end, img }) {
+function HomeList({ title, location, reg='NA', start, end, img }) {
     return (
         <div className='flex flex-col h-full'>
             <div className='relative h-48 w-full overflow-hidden'>
@@ -26,17 +26,24 @@ function HomeList({ title, location, reg, start, end, img }) {
                     <span className="text-white font-[poppins-sb]">{reg}</span>
                 </div>
 
-                <div className="flex items-center gap-2 mt-auto pt-4 border-t border-white/10">
-                    <div className="flex-1 text-center">
-                        <p className="text-[10px] uppercase text-[var(--color-text-muted)] tracking-wider">Start</p>
-                        <p className="font-[poppins-sb] text-white text-sm">{start}</p>
+                {start && end ? (
+                    <div className="flex items-center gap-2 mt-auto pt-4 border-t border-white/10">
+                        <div className="flex-1 text-center">
+                            <p className="text-[10px] uppercase text-[var(--color-text-muted)] tracking-wider">Start</p>
+                            <p className="font-[poppins-sb] text-white text-sm">{start}</p>
+                        </div>
+                        <div className="w-px h-8 bg-white/10"></div>
+                        <div className="flex-1 text-center">
+                            <p className="text-[10px] uppercase text-[var(--color-text-muted)] tracking-wider">End</p>
+                            <p className="font-[poppins-sb] text-white text-sm">{end}</p>
+                        </div>
                     </div>
-                    <div className="w-px h-8 bg-white/10"></div>
-                    <div className="flex-1 text-center">
-                        <p className="text-[10px] uppercase text-[var(--color-text-muted)] tracking-wider">End</p>
-                        <p className="font-[poppins-sb] text-white text-sm">{end}</p>
+                ) : (
+                    <div className="flex items-center justify-center mt-auto pt-4 border-t border-white/10">
+                        <p className="font-[poppins-sb] text-[var(--color-text-muted)] text-sm uppercase tracking-wider">Coming Soon</p>
                     </div>
-                </div>
+                )}
+
             </div>
         </div>
     )

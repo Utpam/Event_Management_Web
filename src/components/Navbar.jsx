@@ -5,7 +5,7 @@ import { useAuth } from '../../AuthContext/UserAuthContext';
 import { authService } from '../../Appwrite/UserAuth'
 
 function Navbar() {
-  const { logout, authStatus } = useAuth()
+  const { logout, authStatus, user } = useAuth()
   const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -33,6 +33,13 @@ function Navbar() {
     { name: 'Home', path: '/' },
     { name: 'Clubs', path: '/clubs' },
   ];
+
+  if (authStatus) {
+    if (user?.globalRole === 'global_admin') {
+      navLinks.push({ name: 'Admin', path: '/admin' });
+    }
+    navLinks.push({ name: 'Dashboard', path: '/dashboard' });
+  }
 
   return (
     <nav

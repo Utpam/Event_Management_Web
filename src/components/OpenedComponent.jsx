@@ -1,6 +1,8 @@
 import React from 'react'
 
-function OpenedComponent({ title, img, location, description, reg, start, end }) {
+function OpenedComponent({ title, img, location, detailed_description, reg='NA', start='NA', end='NA' }) {
+
+
   return (
     <div className='flex flex-col md:flex-row h-full max-h-[80vh] overflow-y-auto'>
       {/* Left Side - Image */}
@@ -38,7 +40,7 @@ function OpenedComponent({ title, img, location, description, reg, start, end })
         <div className='flex-grow'>
           <h3 className='text-lg font-[poppins-sb] text-white mb-2'>About Event</h3>
           <p className='text-[var(--color-text-muted)] font-[poppins-lt] leading-relaxed text-sm'>
-            {description || "Join us for an exciting event filled with learning, networking, and fun! Don't miss out on this opportunity to connect with like-minded individuals."}
+            {detailed_description || "Join us for an exciting event filled with learning, networking, and fun! Don't miss out on this opportunity to connect with like-minded individuals."}
           </p>
         </div>
 

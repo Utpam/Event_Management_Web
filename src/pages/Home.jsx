@@ -29,7 +29,7 @@ function Home() {
     { id: 9, title: 'something Meet', location: 'Malad', reg: '2026-01-15', start: '2026-01-15', end: '2026-01-15' },
     { id: 10, title: 'Student Meet', location: 'Malad', reg: '2026-01-15', start: '2026-01-15', end: '2026-01-15' },
     { id: 11, title: 'Student Meet', location: 'Malad', reg: '2026-01-15', start: '2026-01-15', end: '2026-01-15' },
-    { id: 12, title: 'Student Meet', location: 'Malad', reg: '2026-01-15', start: '2026-01-15', end: '2026-01-15' },
+    { id: 12, title: 'Student Meet', location: 'Malad'},
   ])
 
   const [query, setQuery] = useState('')

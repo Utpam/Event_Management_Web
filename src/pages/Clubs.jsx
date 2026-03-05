@@ -1,60 +1,39 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router'
 import searchIcon from '../assets/search.png'
+import dbService from '../../Appwrite/db'
+import { useAuth } from '../../AuthContext/UserAuthContext'
 
 function Clubs() {
 
-  const [clubs] = useState([
-    {
-      id: 1,
-      name: 'Coding Club',
-      description: 'A community for developers to learn, share, and build amazing projects together.',
-      img: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?ixlib=rb-4.0.3&auto=format&fit=crop&w=1770&q=80'
-    },
-    {
-      id: 2,
-      name: 'Robotics Society',
-      description: 'Building the future with autonomous systems and automated machinery.',
-      img: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-4.0.3&auto=format&fit=crop&w=1770&q=80'
-    },
-    {
-      id: 3,
-      name: 'Literary Society',
-      description: 'For those who love the art of words, debates, and creative writing.',
-      img: 'https://images.unsplash.com/photo-1457369804613-52c61a468e7d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1770&q=80'
-    },
-    {
-      id: 4,
-      name: 'Music Club',
-      description: 'Jam sessions, concerts, and learning music theory with fellow enthusiasts.',
-      img: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1770&q=80'
-    },
-    {
-      id: 5,
-      name: 'Dance Crew',
-      description: 'Express yourself through movement and rhythm in various dance styles.',
-      img: 'https://images.unsplash.com/photo-1547153760-18fc86324498?ixlib=rb-4.0.3&auto=format&fit=crop&w=774&q=80'
-    },
-    {
-      id: 6,
-      name: 'Photography Club',
-      description: 'Capturing moments and mastering the art of visual storytelling.',
-      img: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80'
-    },
-    {
-      id: 7,
-      name: 'Drama Club',
-      description: 'Acting, directing, and stage production for theater lovers.',
-      img: 'https://images.unsplash.com/photo-1503095392237-fa26927750ea?ixlib=rb-4.0.3&auto=format&fit=crop&w=1769&q=80'
-    },
-    {
-      id: 8,
-      name: 'IEEE Student Branch',
-      description: 'Connecting students with the world of technology and engineering.',
-      img: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1770&q=80'
-    },
-  ])
+  const { user } = useAuth();
+  const [clubs, setClubs] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchClubs = async () => {
+      try {
+        const result = await dbService.getClubs();
+        setClubs(result.documents);
+      } catch (error) {
+        console.error("Failed to fetch clubs", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchClubs();
+  }, []);
+
+  const isClubAdmin = (clubId) => {
+    if (!user || !user.memberships) return false;
+    const membership = user.memberships.find(m => m.clubId === clubId);
+    return membership && (membership.role === 'owner' || membership.role === 'club_admin');
+  };
 
   const [query, setQuery] = useState('')
+
+  // Fallback images if not in DB, logic can be improved later
+  const getRandomImg = () => 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1770&q=80';
 
   const filteredClubs = clubs.filter(club =>
     club.name.toLowerCase().includes(query.toLowerCase()) ||
@@ -89,13 +68,13 @@ function Clubs() {
 
       {/* Grid */}
       <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 px-2'>
-        {filteredClubs.map((club) => (
-          <div key={club.id} className='glass-card group rounded-2xl overflow-hidden hover:-translate-y-2 transition-all duration-300 hover:shadow-[0_10px_30px_rgba(0,0,0,0.5)]'>
+        {loading ? <p className="text-white text-center col-span-full">Loading clubs...</p> : filteredClubs.map((club) => (
+          <div key={club.$id} className='glass-card group rounded-2xl overflow-hidden hover:-translate-y-2 transition-all duration-300 hover:shadow-[0_10px_30px_rgba(0,0,0,0.5)]'>
 
             {/* Image Area */}
             <div className="h-48 overflow-hidden relative">
               <img
-                src={club.img}
+                src={club.img || getRandomImg()}
                 alt={club.name}
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
               />
@@ -108,10 +87,16 @@ function Clubs() {
               <p className='text-[var(--color-text-muted)] font-[poppins-lt] text-sm line-clamp-3 mb-4 h-[4.5em]'>
                 {club.description}
               </p>
-              <button className="text-[var(--color-secondary)] font-[poppins-sb] text-sm hover:underline flex items-center gap-1 group/btn">
+              <Link to={`/clubs/${club.$id}`} className="text-[var(--color-secondary)] font-[poppins-sb] text-sm hover:underline flex items-center gap-1 group/btn">
                 View Details
                 <span className="transition-transform group-hover/btn:translate-x-1">→</span>
-              </button>
+              </Link>
+
+              {isClubAdmin(club.$id) && (
+                <Link to={`/clubs/${club.$id}/dashboard`} className="mt-2 text-yellow-400 font-[poppins-sb] text-sm hover:underline flex items-center gap-1">
+                  Manage Club
+                </Link>
+              )}
             </div>
           </div>
         ))}
@@ -119,7 +104,7 @@ function Clubs() {
 
       {filteredClubs.length === 0 && (
         <div className="text-center py-20 text-[var(--color-text-muted)] font-[poppins]">
-          <p>No clubs found matching "{query}"</p>
+          <p>No clubs found</p>
         </div>
       )}
 
