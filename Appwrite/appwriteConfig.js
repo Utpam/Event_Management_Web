@@ -22,7 +22,7 @@ class AppwriteConfig {
     async CreateTeam () {
         try{
             return await this.teams.create(
-                'clubs',
+                config.clubsCollectionId,
                 // 'Clubs',
                 ['admin', 'member']
             )
@@ -36,7 +36,7 @@ class AppwriteConfig {
     
     async CreateMember (email){
         try {
-            'clubs',
+            config.clubsCollectionId,
             ['member'],
             email
 
@@ -50,7 +50,7 @@ class AppwriteConfig {
     
     async CreateMember (email){
         try {
-            'clubs',
+            config.clubsCollectionId,
             ['member'],
             email
 
