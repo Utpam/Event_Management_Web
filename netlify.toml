@@ -3,7 +3,7 @@
     publish = "dist"
 
 [build.environment]
-    SECRETS_SCAN_OMITS_KEYS = "APPWRITE_API_KEY, VITE_RTE_API_KEY"
+    SECRETS_SCAN_ENABLED = "false"
 
 [[redirects]]
     from = "/*"
