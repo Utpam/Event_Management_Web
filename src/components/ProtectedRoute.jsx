@@ -12,8 +12,6 @@ const ProtectedRoute = ({ children, allowedRoles = [], requireClubRole = null })
 
     // Global Role Check
     if (allowedRoles.length > 0) {
-        // user.globalRole might be undefined if not synced yet, but isLoading should handle that.
-        // If synced but no role (shouldn't happen), default to 'user'
         const role = user?.globalRole || 'user';
         if (!allowedRoles.includes(role)) {
             console.warn(`User role ${role} not enabled for this route.`);
@@ -26,7 +24,6 @@ const ProtectedRoute = ({ children, allowedRoles = [], requireClubRole = null })
         const clubId = id; // From URL params
         if (!clubId) {
             console.warn("Club Role check required but no clubId found in params.");
-            // If we can't determine club, we shouldn't grant access if checking for club role
             return <Navigate to="/clubs" replace />;
         }
 

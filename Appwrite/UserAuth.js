@@ -12,8 +12,6 @@ class AuthService {
         this.account = new Account(this.client)
     }
 
-    
-
     // Create Account or SignUp
     createAccount = async (email, password, name) => {
         try {

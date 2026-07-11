@@ -1,52 +1,73 @@
 import React from 'react'
-import { Calendar, MapPin } from 'lucide-react'
+import { MapPin, Calendar } from 'lucide-react'
 
-function HomeList({ title, location, reg='NA', start, end, img }) {
-    return (
-        <div className='flex flex-col h-full'>
-            <div className='relative h-48 w-full overflow-hidden'>
-                <img
-                    src={img || 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
-                    alt={title}
-                    className='w-full h-full object-cover transition-transform duration-500 group-hover:scale-110'
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                <div className="absolute bottom-4 left-4 right-4">
-                    <h3 className="text-xl font-[poppins-sb] text-white truncate drop-shadow-md">{title}</h3>
-                    <div className="flex items-center text-gray-200 text-sm mt-1">
-                        <span className="mr-1">📍</span>
-                        <span className="truncate">{location}</span>
-                    </div>
-                </div>
-            </div>
+function HomeList({ title, location, reg = 'TBA', start, end, img }) {
+  const hasDate = start && end
 
-            <div className='p-4 flex flex-col gap-2 flex-grow'>
-                <div className="flex justify-between items-center text-sm text-[var(--color-text-muted)] font-[poppins]">
-                    <span>Reg Ends:</span>
-                    <span className="text-white font-[poppins-sb]">{reg}</span>
-                </div>
+  return (
+    <div className="flex flex-col h-full">
+      {/* Image */}
+      <div className="relative h-44 w-full overflow-hidden rounded-sm"
+      // style={{ borderRadius: 'var(--radius-md) var(--radius-md) 0 0' }}
+      >
+        <img
+          src={img || 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
+          alt={title}
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+        />
+        <div
+          className="absolute inset-0"
+          style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 60%)' }}
+        />
+      </div>
 
-                {start && end ? (
-                    <div className="flex items-center gap-2 mt-auto pt-4 border-t border-white/10">
-                        <div className="flex-1 text-center">
-                            <p className="text-[10px] uppercase text-[var(--color-text-muted)] tracking-wider">Start</p>
-                            <p className="font-[poppins-sb] text-white text-sm">{start}</p>
-                        </div>
-                        <div className="w-px h-8 bg-white/10"></div>
-                        <div className="flex-1 text-center">
-                            <p className="text-[10px] uppercase text-[var(--color-text-muted)] tracking-wider">End</p>
-                            <p className="font-[poppins-sb] text-white text-sm">{end}</p>
-                        </div>
-                    </div>
-                ) : (
-                    <div className="flex items-center justify-center mt-auto pt-4 border-t border-white/10">
-                        <p className="font-[poppins-sb] text-[var(--color-text-muted)] text-sm uppercase tracking-wider">Coming Soon</p>
-                    </div>
-                )}
+      {/* Content */}
+      <div className="flex flex-col flex-grow p-4 gap-2">
+        <h3
+          className="truncate"
+          style={{ fontFamily: 'poppins-sb', fontSize: '1rem', color: 'var(--text)', lineHeight: 1.3 }}
+        >
+          {title}
+        </h3>
 
-            </div>
+        {location && (
+          <div className="flex items-center gap-1.5" style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>
+            <MapPin size={12} />
+            <span className="truncate">{location}</span>
+          </div>
+        )}
+
+        <div
+          className="flex items-center justify-between mt-1"
+          style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontFamily: 'poppins' }}
+        >
+          <span>Reg. closes</span>
+          <span style={{ color: 'var(--text)', fontFamily: 'poppins-sb' }}>{reg}</span>
         </div>
-    )
+
+        {hasDate ? (
+          <div
+            className="flex items-center gap-2 mt-auto pt-3"
+            style={{ borderTop: '1px solid var(--border)' }}
+          >
+            <Calendar size={12} style={{ color: 'var(--text-subtle)', flexShrink: 0 }} />
+            <div className="flex gap-3 text-xs" style={{ fontFamily: 'poppins', color: 'var(--text-muted)' }}>
+              <span><span style={{ color: 'var(--text-subtle)' }}>Start </span>{start}</span>
+              <span>–</span>
+              <span>{end}</span>
+            </div>
+          </div>
+        ) : (
+          <div
+            className="mt-auto pt-3"
+            style={{ borderTop: '1px solid var(--border)' }}
+          >
+            <span className="badge">Coming Soon</span>
+          </div>
+        )}
+      </div>
+    </div>
+  )
 }
 
 export default HomeList

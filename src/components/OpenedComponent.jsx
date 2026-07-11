@@ -1,50 +1,72 @@
 import React from 'react'
+import { MapPin, Calendar, Clock } from 'lucide-react'
 
-function OpenedComponent({ title, img, location, detailed_description, reg='NA', start='NA', end='NA' }) {
-
-
+function OpenedComponent({ title, img, location, detailed_description, reg = 'TBA', start = 'TBA', end = 'TBA' }) {
   return (
-    <div className='flex flex-col md:flex-row h-full max-h-[80vh] overflow-y-auto'>
-      {/* Left Side - Image */}
-      <div className='w-full md:w-1/2 h-64 md:h-auto sticky top-0'>
+    <div className="flex flex-col md:flex-row max-h-[85vh] overflow-y-auto" style={{ borderRadius: 'var(--radius-lg)' }}>
+      {/* Left — Image */}
+      <div className="w-full md:w-2/5 shrink-0 h-56 md:h-auto relative overflow-hidden" style={{ borderRadius: 'var(--radius-lg) 0 0 var(--radius-lg)' }}>
         <img
           src={img || 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'}
-          className='w-full h-full object-cover'
+          className="w-full h-full object-cover"
           alt={title}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0f172a] md:bg-gradient-to-r md:from-transparent md:to-[#0f172a] opacity-80"></div>
+        <div
+          className="absolute inset-0"
+          style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.35) 0%, transparent 50%)' }}
+        />
       </div>
 
-      {/* Right Side - Details */}
-      <div className='w-full md:w-1/2 p-6 md:p-8 flex flex-col gap-6 bg-[#0f172a]/50'>
-
+      {/* Right — Details */}
+      <div
+        className="flex flex-col gap-5 p-6 md:p-8 flex-grow"
+        style={{ background: 'var(--surface)', borderRadius: '0 var(--radius-lg) var(--radius-lg) 0' }}
+      >
+        {/* Title & Location */}
         <div>
-          <h1 className='text-3xl md:text-4xl font-[poppins-sb] text-white leading-tight mb-2'>{title}</h1>
-          <div className='flex items-center gap-2 text-[var(--color-secondary)] font-[poppins]'>
-            <span>📍</span>
-            <span>{location}</span>
+          <h2
+            style={{ fontFamily: 'poppins-sb', fontSize: 'clamp(1.3rem, 3vw, 1.8rem)', color: 'var(--text)', lineHeight: 1.25, marginBottom: '0.4rem' }}
+          >
+            {title}
+          </h2>
+          {location && (
+            <div className="flex items-center gap-1.5" style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>
+              <MapPin size={14} />
+              <span>{location}</span>
+            </div>
+          )}
+        </div>
+
+        {/* Date info grid */}
+        <div
+          className="grid grid-cols-2 gap-4 py-4"
+          style={{ borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}
+        >
+          <div>
+            <p style={{ fontFamily: 'poppins-sb', fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--text-subtle)', marginBottom: '0.25rem' }}>
+              Registration Closes
+            </p>
+            <p style={{ fontFamily: 'poppins-sb', color: 'var(--text)', fontSize: '0.9rem' }}>{reg}</p>
+          </div>
+          <div>
+            <p style={{ fontFamily: 'poppins-sb', fontSize: '0.65rem', textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--text-subtle)', marginBottom: '0.25rem' }}>
+              Event Date
+            </p>
+            <p style={{ fontFamily: 'poppins-sb', color: 'var(--text)', fontSize: '0.9rem' }}>{start}{end !== start && end !== 'TBA' ? ` – ${end}` : ''}</p>
           </div>
         </div>
 
-        <div className='grid grid-cols-2 gap-4 border-y border-white/10 py-6'>
-          <div>
-            <p className='text-[10px] uppercase text-[var(--color-text-muted)] tracking-wider font-bold'>Registration Ends</p>
-            <p className='text-white font-[poppins-sb]'>{reg}</p>
-          </div>
-          <div>
-            <p className='text-[10px] uppercase text-[var(--color-text-muted)] tracking-wider font-bold'>Event Date</p>
-            <p className='text-white font-[poppins-sb]'>{start}</p>
-          </div>
-        </div>
-
-        <div className='flex-grow'>
-          <h3 className='text-lg font-[poppins-sb] text-white mb-2'>About Event</h3>
-          <p className='text-[var(--color-text-muted)] font-[poppins-lt] leading-relaxed text-sm'>
+        {/* Description */}
+        <div className="flex-grow">
+          <h3 style={{ fontFamily: 'poppins-sb', fontSize: '0.9rem', color: 'var(--text)', marginBottom: '0.5rem' }}>
+            About this event
+          </h3>
+          <p style={{ color: 'var(--text-muted)', fontFamily: 'poppins', fontSize: '0.875rem', lineHeight: 1.7 }}>
             {detailed_description || "Join us for an exciting event filled with learning, networking, and fun! Don't miss out on this opportunity to connect with like-minded individuals."}
           </p>
         </div>
 
-        <button className='button w-full py-4 text-lg font-bold shadow-lg shadow-indigo-500/20'>
+        <button id="event-register-btn" className="btn w-full" style={{ padding: '0.75rem', fontSize: '0.9rem' }}>
           Register Now
         </button>
       </div>

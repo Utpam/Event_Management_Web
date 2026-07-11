@@ -5,116 +5,163 @@ import Logo from '../assets/Logo.png'
 import { Link, useNavigate } from "react-router"
 
 function Login() {
-    const [error, setError] = useState('')
-    const inputRef = useRef({})
-    const navigate = useNavigate()
-    const { login } = useAuth()
-    const [showpass, setShowpass] = useState(false)
-    const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const inputRef = useRef({})
+  const navigate = useNavigate()
+  const { login } = useAuth()
+  const [showpass, setShowpass] = useState(false)
+  const [loading, setLoading] = useState(false)
 
-    useEffect(() => {
-        if (inputRef.current.email) {
-            inputRef.current.email.focus()
-        }
-    }, [])
+  useEffect(() => {
+    if (inputRef.current.email) inputRef.current.email.focus()
+  }, [])
 
-    const LoginHandler = async (e) => {
-        e.preventDefault();
-        setError("")
-        const email = inputRef.current.email?.value
-        const password = inputRef.current.password?.value
+  const LoginHandler = async (e) => {
+    e.preventDefault()
+    setError("")
+    const email = inputRef.current.email?.value
+    const password = inputRef.current.password?.value
 
-        if (!email || !password) {
-            setError('Please enter both email and password')
-            return
-        }
-
-        setLoading(true)
-        try {
-            const session = await authService.authlogin(email, password)
-            if (session) {
-                const userData = await authService.getCurrentUser()
-                if (userData) {
-                    login(userData);
-                    navigate('/')
-                }
-            }
-        } catch (err) {
-            setError(err.message || 'Login Failed')
-            console.error(err)
-        } finally {
-            setLoading(false)
-        }
+    if (!email || !password) {
+      setError('Please enter both email and password')
+      return
     }
 
-    return (
-        <div className="flex justify-center items-center w-full min-h-[calc(100vh-8rem)]">
-            <div className="glass-card rounded-2xl p-8 w-full max-w-md flex flex-col items-center relative overflow-hidden">
-                {/* Background Glow */}
-                <div className="absolute top-[-50%] left-[-50%] w-full h-full bg-blue-500/20 blur-[100px] rounded-full pointer-events-none"></div>
+    setLoading(true)
+    try {
+      const session = await authService.authlogin(email, password)
+      if (session) {
+        const userData = await authService.getCurrentUser()
+        if (userData) {
+          login(userData)
+          navigate('/')
+        }
+      }
+    } catch (err) {
+      setError(err.message || 'Login Failed')
+      console.error(err)
+    } finally {
+      setLoading(false)
+    }
+  }
 
-                <img src={Logo} className="w-24 mb-6 drop-shadow-lg z-10" />
+  return (
+    <div className="flex justify-center items-center w-full min-h-[calc(100vh-5rem)]">
+      <div
+        className="card w-full max-w-md flex flex-col items-center"
+        style={{ padding: '2.5rem 2rem', boxShadow: 'var(--shadow-md)' }}
+      >
+        <img src={Logo} className="h-12 mb-6 logo-adaptive" alt="Logo" />
 
-                <h2 className="text-2xl font-[poppins-sb] text-white mb-2 z-10">Welcome Back</h2>
-                <p className="text-[var(--color-text-muted)] font-[poppins] text-sm mb-6 z-10">Please enter your details to sign in</p>
+        <h1
+          className="text-2xl mb-1"
+          style={{ fontFamily: 'poppins-sb', color: 'var(--text)' }}
+        >
+          Welcome back
+        </h1>
+        <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', marginBottom: '1.75rem', fontFamily: 'poppins' }}>
+          Sign in to your account
+        </p>
 
-                {error && <div className="bg-red-500/10 border border-red-500/50 text-red-200 text-sm p-3 rounded-lg w-full mb-4 text-center z-10">{error}</div>}
+        {error && (
+          <div
+            className="w-full text-sm text-center rounded-lg mb-4 p-3"
+            style={{
+              background: 'var(--danger-subtle)',
+              color: 'var(--danger)',
+              border: '1px solid var(--danger)',
+              fontFamily: 'poppins',
+            }}
+          >
+            {error}
+          </div>
+        )}
 
-                <form className="flex flex-col w-full gap-5 z-10" onSubmit={LoginHandler}>
+        <form className="flex flex-col w-full gap-4" onSubmit={LoginHandler}>
+          <div className="flex flex-col gap-1.5">
+            <label
+              htmlFor="login-email"
+              style={{ fontFamily: 'poppins-sb', fontSize: '0.8rem', color: 'var(--text-muted)' }}
+            >
+              Email
+            </label>
+            <input
+              id="login-email"
+              placeholder="you@example.com"
+              type="email"
+              ref={(el) => (inputRef.current.email = el)}
+              className="input"
+            />
+          </div>
 
-                    <div className="flex flex-col gap-1">
-                        <label htmlFor="Email" className="font-[poppins-sb] text-sm text-[var(--color-text-muted)] ml-1">Email</label>
-                        <input
-                            id="Email"
-                            placeholder='Enter your email'
-                            type="email"
-                            ref={(el) => inputRef.current.email = el}
-                            className="bg-slate-800/50 border border-slate-700 focus:border-[var(--color-primary)] text-white text-sm p-3 rounded-xl font-[poppins-lt] outline-none transition-all w-full placeholder:text-slate-500"
-                        />
-                    </div>
-
-                    <div className="flex flex-col gap-1">
-                        <label htmlFor="Password" className="font-[poppins-sb] text-sm text-[var(--color-text-muted)] ml-1">Password</label>
-                        <div className="relative">
-                            <input
-                                id="Password"
-                                placeholder='Enter your password'
-                                type={showpass ? 'text' : 'password'}
-                                ref={(el) => inputRef.current.password = el}
-                                className="bg-slate-800/50 border border-slate-700 focus:border-[var(--color-primary)] text-white text-sm p-3 rounded-xl font-[poppins-lt] outline-none transition-all w-full placeholder:text-slate-500"
-                            />
-                            <button
-                                type="button"
-                                onClick={() => setShowpass(!showpass)}
-                                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white text-xs font-[poppins]"
-                            >
-                                {showpass ? 'Hide' : 'Show'}
-                            </button>
-                        </div>
-                    </div>
-
-                    <div className="flex w-full justify-between items-center mt-1">
-                        <Link to='/forget-pass' className="text-[var(--color-primary)] hover:text-[var(--color-primary-dark)] text-sm font-[poppins] transition-colors" >Forgot password?</Link>
-                    </div>
-
-                    <button
-                        type="submit"
-                        disabled={loading}
-                        className={`button w-full py-3 mt-2 text-lg font-bold flex justify-center items-center ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
-                    >
-                        {loading ? (
-                            <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
-                        ) : 'Sign In'}
-                    </button>
-
-                    <div className="flex w-full font-[poppins] justify-center text-sm text-[var(--color-text-muted)] mt-4">
-                        Don't have an account?
-                        <Link to='/register' className="text-[var(--color-primary)] hover:text-[var(--color-primary-dark)] ml-2 font-[poppins-sb] transition-colors" >Sign up</Link>
-                    </div>
-                </form>
+          <div className="flex flex-col gap-1.5">
+            <label
+              htmlFor="login-password"
+              style={{ fontFamily: 'poppins-sb', fontSize: '0.8rem', color: 'var(--text-muted)' }}
+            >
+              Password
+            </label>
+            <div className="relative">
+              <input
+                id="login-password"
+                placeholder="••••••••"
+                type={showpass ? 'text' : 'password'}
+                ref={(el) => (inputRef.current.password = el)}
+                className="input"
+                style={{ paddingRight: '3.5rem' }}
+              />
+              <button
+                type="button"
+                onClick={() => setShowpass(!showpass)}
+                style={{
+                  position: 'absolute', right: '0.75rem', top: '50%',
+                  transform: 'translateY(-50%)',
+                  background: 'none', border: 'none', cursor: 'pointer',
+                  color: 'var(--text-subtle)', fontSize: '0.75rem', fontFamily: 'poppins',
+                }}
+              >
+                {showpass ? 'Hide' : 'Show'}
+              </button>
             </div>
-        </div>
-    )
+          </div>
+
+          <div className="flex justify-end">
+            <Link
+              to="/forget-pass"
+              style={{ color: 'var(--accent)', fontSize: '0.8rem', fontFamily: 'poppins', textDecoration: 'none' }}
+              className="hover:underline"
+            >
+              Forgot password?
+            </Link>
+          </div>
+
+          <button
+            id="login-submit"
+            type="submit"
+            disabled={loading}
+            className="btn w-full"
+            style={{ padding: '0.75rem', fontSize: '0.9rem', marginTop: '0.25rem' }}
+          >
+            {loading ? <span className="spinner" /> : 'Sign In'}
+          </button>
+
+          <p
+            className="text-center"
+            style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontFamily: 'poppins', marginTop: '0.5rem' }}
+          >
+            Don&apos;t have an account?{' '}
+            <Link
+              to="/register"
+              style={{ color: 'var(--accent)', fontFamily: 'poppins-sb', textDecoration: 'none' }}
+              className="hover:underline"
+            >
+              Sign up
+            </Link>
+          </p>
+        </form>
+      </div>
+    </div>
+  )
 }
 
 export default Login
